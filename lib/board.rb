@@ -1,6 +1,7 @@
 require 'yaml'
 
 class Board
+  #setters and getters for loading from yaml file
   attr_reader :word, :guesses, :correct, :errors, :missing, :done
   def initialize(word = "", guesses = [], correct = [], errors = 0)
     @word = word
