@@ -1,7 +1,7 @@
 require 'yaml'
 
 class Board
-  attr_reader :word
+  attr_reader :word, :guesses, :correct, :errors, :missing, :done
   def initialize(word = "", guesses = [], correct = [], errors = 0)
     @word = word
     @guesses = guesses
@@ -11,13 +11,21 @@ class Board
     @done = false
   end
 
-  def to_YAML
-    serialized = YAML.dump(self)
+  # Writes current game to YAML
+  def to_YAML(string)
+    yaml_data = YAML.dump(self)
+    File.write("./../saves/#{string}.yaml", yaml_data)
   end
 
-  def self.from_YAML(string)
-    data = YAML.load(string)
-    self.new(data[:word], data[:guesses], data[:correct], data[:errors])
+  #Loads data from YAML file
+  def from_YAML(string)
+    data = YAML.unsafe_load_file("./../saves/#{string}.yaml")
+    @word = data.word
+    @guesses = data.guesses
+    @correct = data.correct
+    @errors = data.errors
+    @missing = data.missing
+    @done = data.done
   end
 
 #Checks if game is over
@@ -65,6 +73,7 @@ class Board
     puts @guesses.inspect
   end
 
+  #Displays current hangman board
   def displayHangMan
     case @errors
     when 0

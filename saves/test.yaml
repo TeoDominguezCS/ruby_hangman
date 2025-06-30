@@ -1,0 +1,14 @@
+--- !ruby/object:Board
+word: nicaragua
+guesses:
+- b
+- d
+- e
+- o
+- l
+correct:
+- a
+- c
+errors: 5
+missing: -17
+done: false

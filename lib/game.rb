@@ -8,6 +8,7 @@ class Game
     end
   end
 
+  #Generates a word from file that is greater than 5 and less than 12 letters
   def generateWord
     File.open("/Users/teo/repos/ruby_hangman/data/google-10000-english-no-swears.txt", "r") do |file|
       while true
@@ -22,6 +23,7 @@ class Game
     end
   end
 
+  #Menu display, goes into play loop depending on selection
   def display
     puts "Welcome to Ruby Hangman!"
     puts "To start a new game press 1"
@@ -33,22 +35,34 @@ class Game
         @board = Board.new(generateWord)
         play()
       when 2
-        puts "Load"
+        @board = Board.new()
+        puts "Enter the save name"
+        input = gets.chomp.downcase
+        @board.from_YAML(input)
+        play()
       when 3
         puts "Goodbye"
     end
   end
 
+  #Play loop
   def play
     while true
       @board.displayHangMan
-      puts "Enter a letter"
+      puts "Enter a letter or 1 to save and quit"
       input = gets.chomp.downcase
-      @board.checkLetter(input)
-      if @board.gameOver?
-        @board.displayHangMan
-        print "Correct word: "
-        puts @board.word
+      if input != "1"
+        @board.checkLetter(input)
+        if @board.gameOver?
+          @board.displayHangMan
+          print "Correct word: "
+          puts @board.word
+          break
+        end
+      else
+        puts "Enter a file name"
+        input = gets.chomp.downcase
+        @board.to_YAML(input)
         break
       end
     end
@@ -56,4 +70,5 @@ class Game
 
 end
 
+#Initializes and runs game
 game = Game.new
